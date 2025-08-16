@@ -1,234 +1,359 @@
-# Instagram Scraper
+# 🔍 Instagram Profile Scraper
 
-A Python-based tool for scraping Instagram user profile information including basic account details, bio, website links, post/follower counts, and complete followers/following lists. Features automatic account creation and session management with retry logic.
+<div align="center">
 
-## Features
+**A powerful Python tool for comprehensive Instagram profile data extraction**
 
-✅ **Full name** extraction  
-✅ **Bio** text retrieval  
-✅ **Website link** extraction  
-✅ **Number of posts** count  
-✅ **Followers count** retrieval  
-✅ **Following count** retrieval  
-✅ **Complete followers list** with detailed user info
-✅ **Complete following list** with detailed user info
-✅ **Automatic Instagram account creation** using temporary emails
-✅ **Session management** with automatic renewal
-✅ **Retry logic** with account recreation on failures
-✅ **Rate limiting protection** with random delays
+![Python](https://img.shields.io/badge/python-v3.7+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
 
-## Project Structure
+</div>
 
-```
-├── insta_scraper.py          # Main scraper script
-├── create_email.py           # Temporary email creation and management
-├── insta_acount_creation.py  # Automated Instagram account creation
-├── account_session_id.json   # Current session storage
-├── email_hash.json          # Email credentials storage
-├── README.md                # Project documentation
-└── .env                     # Environment variables (RapidAPI key)
-```
+## 📋 Table of Contents
 
-## Installation
+- [Features](#-features)
+- [Demo](#-demo)
+- [Quick Start](#-quick-start)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Usage](#-usage)
+- [How It Works](#-how-it-works)
+- [Output Format](#-output-format)
+- [Advanced Configuration](#-advanced-configuration)
+- [Troubleshooting](#-troubleshooting)
+- [Legal & Ethical Guidelines](#-legal--ethical-guidelines)
+- [Contributing](#-contributing)
 
-1. Clone this repository:
+## ✨ Features
+
+### Core Data Extraction
+- 👤 **Complete Profile Information**: Full name, bio, website links
+- 📊 **Engagement Metrics**: Posts, followers, and following counts
+- 👥 **Comprehensive Lists**: Complete followers and following with detailed user info
+- 🔄 **Paginated Collection**: Handles large follower/following lists automatically
+
+### Automation & Reliability
+- 🤖 **Automated Account Creation**: Creates Instagram accounts using temporary emails
+- 🔐 **Session Management**: Persistent session storage with automatic renewal
+- 🔄 **Intelligent Retry Logic**: Automatic account recreation on failures
+- ⏱️ **Rate Limit Protection**: Smart delays and request throttling
+- 📝 **Comprehensive Logging**: Detailed error tracking and debugging
+
+## 🎬 Demo
+
+### Automated Account Creation Process
+<!-- Replace 'your-gif-filename.gif' with your actual GIF filename -->
+![Account Creation Demo](./demo/account-creation-demo.gif)
+
+*The tool automatically creates Instagram accounts using temporary emails and browser automation*
+
+## 🚀 Quick Start
+
 ```bash
-git clone <your-repo-url>
+# Clone the repository
+git clone https://github.com/yourusername/instagram-scraper.git
 cd instagram-scraper
-```
 
-2. Install required dependencies:
-```bash
-pip install requests playwright python-dotenv
-```
-
-3. Install Playwright browsers:
-```bash
+# Install dependencies
+pip install -r requirements.txt
 playwright install chromium
+
+# Setup environment
+echo "RAPIDAPI_KEY=your_api_key_here" > .env
+
+# Run the scraper
+python insta_scraper.py
 ```
 
-4. Create a `.env` file in the project root:
-```bash
-touch .env
-```
+## 📦 Installation
 
-## Configuration
+### Prerequisites
+- Python 3.7 or higher
+- RapidAPI account with "Privatix Temp Mail" subscription
 
-### Environment Variables
+### Step-by-step Installation
 
-Create a `.env` file and add your RapidAPI key for the temporary email service:
+1. **Clone the Repository**
+   ```bash
+   git clone <your-repo-url>
+   cd instagram-scraper
+   ```
+
+2. **Create Virtual Environment** (Recommended)
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install requests playwright python-dotenv
+   ```
+
+4. **Install Browser**
+   ```bash
+   playwright install chromium
+   ```
+
+5. **Setup Environment Variables**
+   ```bash
+   touch .env
+   ```
+
+## ⚙️ Configuration
+
+### Environment Setup
+
+Create a `.env` file in the project root:
 
 ```env
 RAPIDAPI_KEY=your_rapidapi_key_here
 ```
 
-**How to get your RapidAPI Key:**
-1. Sign up at [RapidAPI](https://rapidapi.com/)
-2. Subscribe to the "Privatix Temp Mail" API
-3. Copy your API key from the dashboard
+### Getting Your RapidAPI Key
 
-## Usage
+1. 🌐 Visit [RapidAPI](https://rapidapi.com/) and create an account
+2. 🔍 Search for "Privatix Temp Mail" API
+3. 💳 Subscribe to the service (free tier available)
+4. 🔑 Copy your API key from the dashboard
+5. 📝 Add it to your `.env` file
+
+## 💻 Usage
 
 ### Basic Usage
 
-Edit the `example_accounts_to_scrape` list in `insta_scraper.py` to include the usernames you want to scrape:
+1. **Configure Target Accounts**
+   
+   Edit the target list in `insta_scraper.py`:
+   ```python
+   example_accounts_to_scrape = [
+       "natgeo",
+       "nasa", 
+       "username_here",
+   ]
+   ```
 
+2. **Run the Scraper**
+   ```bash
+   python insta_scraper.py
+   ```
+
+3. **Monitor Progress**
+   
+   The script will automatically:
+   - Create temporary email accounts
+   - Generate Instagram accounts
+   - Extract session IDs
+   - Scrape target profiles
+   - Save data to JSON files
+
+### Advanced Usage
+
+**Custom Retry Configuration:**
 ```python
-example_accounts_to_scrape = [
-    "natgeo",
-    "username1", 
-    "username2",
-]
+numb_of_retires = 5  # Increase retry attempts
 ```
 
-Run the scraper:
-
-```bash
-python insta_scraper.py
+**Adjust Rate Limiting:**
+```python
+time.sleep(random.randint(2, 8))  # Increase delays
 ```
 
-### How It Works
+## 🔧 How It Works
 
-1. **Automatic Account Creation**: Creates temporary email addresses and Instagram accounts automatically
-2. **Session Management**: Extracts and stores session IDs for API access
-3. **Data Scraping**: Retrieves comprehensive user data including followers/following lists
-4. **Retry Logic**: Automatically creates new accounts if sessions expire or fail
-5. **Rate Limiting**: Implements delays to avoid Instagram's rate limits
+### Architecture Overview
 
-### Output
+```mermaid
+graph TD
+    A[Start Scraping] --> B[Check Existing Session]
+    B --> C{Session Valid?}
+    C -->|Yes| D[Use Existing Session]
+    C -->|No| E[Create Temp Email]
+    E --> F[Create Instagram Account]
+    F --> G[Extract Session ID]
+    G --> H[Save Session]
+    D --> I[Scrape Profile Data]
+    H --> I
+    I --> J[Get Followers List]
+    J --> K[Get Following List]
+    K --> L[Save to JSON]
+    L --> M{More Accounts?}
+    M -->|Yes| A
+    M -->|No| N[Complete]
+```
 
-The script creates individual JSON files for each scraped account containing:
+### Process Flow
+
+1. **🔍 Session Check**: Verifies existing session validity
+2. **📧 Email Generation**: Creates temporary email via RapidAPI
+3. **🤖 Account Creation**: Automates Instagram signup using Playwright
+4. **🔐 Session Extraction**: Captures and stores authentication tokens
+5. **📊 Data Collection**: Scrapes comprehensive profile information
+6. **💾 Data Storage**: Exports structured JSON files
+
+## 📄 Output Format
+
+Each scraped account generates a detailed JSON file:
 
 ```json
 {
     "user_id": "123456789",
-    "user_full_name": "Full Name",
-    "user_biography": "Bio text here...",
-    "user_bio_links": ["https://website.com"],
-    "user_posts_count": 150,
-    "user_followers_count": 50000,
-    "user_following_count": 500,
+    "user_full_name": "National Geographic",
+    "user_biography": "Experience the world through the eyes of National Geographic photographers.",
+    "user_bio_links": ["https://www.nationalgeographic.com"],
+    "user_posts_count": 15420,
+    "user_followers_count": 283000000,
+    "user_following_count": 147,
     "followers_accounts": [
         {
-            "id": "user_id",
+            "id": "follower_user_id",
             "username": "follower_username",
-            "full_name": "Follower Name",
-            "profile_pic_url": "https://...",
+            "full_name": "Follower Display Name",
+            "profile_pic_url": "https://instagram.com/...",
             "is_private": false,
-            "is_verified": false
+            "is_verified": true,
+            "follower_count": 50000,
+            "following_count": 200
         }
     ],
     "following_accounts": [
         {
-            "id": "user_id", 
-            "username": "following_username",
-            "full_name": "Following Name",
-            "profile_pic_url": "https://...",
+            "id": "following_user_id",
+            "username": "following_username", 
+            "full_name": "Following Display Name",
+            "profile_pic_url": "https://instagram.com/...",
             "is_private": false,
-            "is_verified": true
+            "is_verified": false,
+            "follower_count": 25000,
+            "following_count": 500
         }
     ]
 }
 ```
 
-## Code Features
+## 🔧 Advanced Configuration
 
-- **Automated Account Management**: Creates Instagram accounts using temporary emails
-- **Session Persistence**: Stores and reuses session IDs across runs
-- **Intelligent Retry Logic**: Recreates accounts when sessions fail (configurable retry count)
-- **Comprehensive Data Extraction**: Gets complete followers/following lists with pagination
-- **Rate Limiting Protection**: Random delays between requests (1-5 seconds)
-- **Error Handling**: Graceful error handling with detailed logging
-- **Duplicate Prevention**: Avoids duplicate entries in followers/following lists
-- **JSON Export**: Automatic saving of all scraped data to structured JSON files
-
-## Configuration Options
-
-### Retry Settings
-
-You can modify the retry behavior in `insta_scraper.py`:
-
-```python
-numb_of_retires = 3  # Number of retry attempts
+### Project Structure
+```
+instagram-scraper/
+├── 📄 insta_scraper.py          # Main scraper logic
+├── 📄 create_email.py           # Temporary email management
+├── 📄 insta_account_creation.py # Automated account creation
+├── 📁 data/                     # Scraped data storage
+├── 📁 demo/                     # Demo GIFs and screenshots
+├── 🔧 account_session_id.json   # Session storage
+├── 🔧 email_hash.json          # Email credentials
+├── 🔧 .env                     # Environment variables
+└── 📖 README.md               # Documentation
 ```
 
-### Rate Limiting
+### Customization Options
 
-Adjust delays in the `get_accounts()` function:
-
+**Rate Limiting Settings:**
 ```python
-time.sleep(random.randint(1,5))  # Random delay between 1-5 seconds
+MIN_DELAY = 2    # Minimum delay between requests
+MAX_DELAY = 8    # Maximum delay between requests
+REQUEST_TIMEOUT = 30  # Request timeout in seconds
 ```
 
-## Important Notes
+**Retry Configuration:**
+```python
+MAX_RETRIES = 3           # Maximum retry attempts
+RETRY_DELAY = 5           # Delay between retries
+SESSION_RETRY_LIMIT = 5   # Session creation retries
+```
 
-⚠️ **Legal and Ethical Considerations:**
-- Only scrape public Instagram profiles
-- Respect Instagram's Terms of Service
-- Use responsibly and don't overload Instagram's servers
-- Be aware that automated account creation may violate Instagram's ToS
-- Consider the privacy implications of collecting follower data
+**Browser Settings:**
+```python
+HEADLESS_MODE = True      # Run browser in headless mode
+BROWSER_TIMEOUT = 30000   # Browser operation timeout
+```
 
-⚠️ **Technical Limitations:**
-- Requires RapidAPI subscription for temporary email service
-- Browser automation may be detected by Instagram
-- Large follower lists may take significant time to scrape
-- Instagram may implement additional anti-bot measures
+## 🛠️ Troubleshooting
 
-⚠️ **Rate Limiting:**
-- The script includes delays but Instagram has sophisticated rate limiting
-- Large accounts with many followers/following may trigger limits
-- Consider breaking large scraping jobs into smaller batches
+### Common Issues & Solutions
 
-## Troubleshooting
+| Issue | Possible Cause | Solution |
+|-------|----------------|----------|
+| **"Failed to get user info"** | Invalid RapidAPI key | Verify API key and subscription |
+| **Account creation failures** | Email service issues | Check RapidAPI service status |
+| **Session expiration** | Instagram security measures | Increase delays between requests |
+| **Browser automation errors** | Playwright issues | Reinstall browser: `playwright install` |
+| **Rate limiting** | Too many requests | Increase `time.sleep()` values |
 
-**Common Issues:**
+### Debug Mode
 
-1. **"Failed to get user info" Error:**
-   - Check if your RapidAPI key is valid
-   - Ensure the target username exists and is public
-   - Verify your internet connection
-   - Check if Instagram has implemented new anti-bot measures
+Enable detailed logging:
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
 
-2. **Account Creation Failures:**
-   - Verify RapidAPI subscription is active
-   - Check if temporary email service is working
-   - Ensure Playwright browsers are installed
-   - Try running with `headless=False` to debug visually
+Run with visible browser for debugging:
+```python
+browser = playwright.chromium.launch(headless=False)
+```
 
-3. **Session Expiration:**
-   - The script automatically creates new accounts when sessions fail
-   - If persistent issues occur, check Instagram's current policies
-   - Consider reducing scraping frequency
+### Performance Tips
 
-4. **Browser Automation Issues:**
-   - Ensure Playwright is properly installed
-   - Try updating browser binaries: `playwright install chromium`
-   - Check if Instagram has changed their signup flow
+- **Batch Processing**: Process accounts in smaller batches
+- **Parallel Processing**: Use threading for multiple accounts (with caution)
+- **Caching**: Implement result caching to avoid re-scraping
+- **Monitoring**: Use logging to track performance metrics
 
-## Dependencies
+## ⚖️ Legal & Ethical Guidelines
 
-- `requests`: HTTP requests for Instagram API
-- `playwright`: Browser automation for account creation
-- `python-dotenv`: Environment variable management
-- `hashlib`: Email hashing for temporary mail API
-- `random`: Random delays and usernames
-- `json`: Data serialization
-- `re`: Regular expressions for code extraction
-- `logging`: Error tracking and debugging
+### ✅ Recommended Practices
+- Only scrape **public profiles**
+- Respect **rate limits** and implement delays
+- Use data for **research/analysis purposes**
+- Implement **proper error handling**
+- Follow **robots.txt** guidelines
 
-## Contributing
+### ⚠️ Important Warnings
+- **Instagram ToS**: Automated account creation may violate terms
+- **Privacy Concerns**: Respect user privacy and data protection laws
+- **Rate Limiting**: Instagram has sophisticated detection systems
+- **Legal Compliance**: Ensure compliance with local data protection laws
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Create a Pull Request
+### 🚫 Prohibited Uses
+- Commercial data reselling
+- Harassment or stalking
+- Spam or unsolicited messages
+- Violation of user privacy
+- Circumventing platform security
 
-## Disclaimer
 
-This tool is for educational and research purposes only. Users are responsible for complying with Instagram's Terms of Service, RapidAPI's terms, and applicable laws. The automated account creation feature may violate Instagram's Terms of Service. The developers are not responsible for any misuse of this tool or any consequences resulting from its use.
 
-## License
+We welcome contributions! Please follow these steps:
 
-This project is open source. Please use responsibly and in accordance with Instagram's Terms of Service and applicable laws.
+
+### Contribution Guidelines
+- Follow PEP 8 style guidelines
+- Add tests for new features
+- Update documentation
+- Ensure backward compatibility
+- Add meaningful commit messages
+
+
+
+## ⚠️ Disclaimer
+
+**This tool is for educational and research purposes only.** Users are responsible for:
+- Complying with Instagram's Terms of Service
+- Respecting applicable laws and regulations
+- Following ethical data collection practices
+- Obtaining necessary permissions for data use
+
+The developers assume no responsibility for misuse or any consequences resulting from the use of this tool.
+
+---
+
+<div align="center">
+
+**Made with ❤️ for the developer community**
+
+⭐ Star this repo if you find it helpful!
+
+</div>
